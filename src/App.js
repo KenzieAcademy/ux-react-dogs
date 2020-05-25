@@ -3,41 +3,56 @@ import Dog from "./components/Dog";
 import Header from "./components/Header";
 import "./App.css";
 
-function App() {
-  let dogs = [
-    {
-      name: "Scruffles",
-      type: "Chihuahua",
-    },
-    {
-      name: "Snarf",
-      type: "Border Collie",
-    },
-    {
-      name: "Wookie",
-      type: "English Sheepdog",
-    },
-  ];
+class App extends React.Component{
+  state = {
+     dogs: [
+          {
+            name: "Scruffles",
+            type: "Chihuahua",
+          },
+          {
+            name: "Snarf",
+            type: "Border Collie",
+          },
+          {
+            name: "Wookie",
+            type: "English Sheepdog",
+          },
+        ],
+        favoriteDog: "",   
+  };
 
-  function pickNewFavorite() {
-    let newDogIndex = Math.floor(Math.random() * dogs.length);
-    return dogs[newDogIndex];
-  }
+   pickNewFavorite() {
+        let newDogIndex = Math.floor(Math.random() * this.state.dogs.length);
+        return this.state.dogs[newDogIndex];
+      }
 
-  let favoriteDog = pickNewFavorite();
+      componentDidMount(){
+        this.setState({favoriteDog: this.pickNewFavorite()});
+      }
 
-  return (
-    <div className="dogs">
-      <Header numDogs={dogs.length} />
+      
+      onPickNewFavorite = () => {
+        this.setState({favoriteDog: this.pickNewFavorite()})
+      }
+      
+
+      
+  render(){
+    return(
+      <div className="dogs">
+      <Header numDogs={this.state.dogs.length} />
       <h2>My Dogs</h2>
       <div>
-        {dogs.map((dog) => (
+        {this.state.dogs.map((dog) => (
           <Dog dog={dog} />
-        ))}
+          ))}
       </div>
-      <h2>My Favorite dog is {favoriteDog.name}</h2>
+      <h2>My Favorite dog is {this.state.favoriteDog.name}</h2>
+  <button type="button" onClick={this.onPickNewFavorite}> New Favorite</button>
     </div>
-  );
+    );
+  }
 }
 
 export default App;
