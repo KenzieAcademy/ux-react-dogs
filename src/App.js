@@ -1,10 +1,12 @@
-import React from "react";
+import React, { Component } from "react";
 import Dog from "./components/Dog";
 import Header from "./components/Header";
 import "./App.css";
+import { render } from "@testing-library/react";
 
-function App() {
-  let dogs = [
+class App extends Component {
+  state = {
+  dogs: [
     {
       name: "Scruffles",
       type: "Chihuahua",
@@ -17,27 +19,42 @@ function App() {
       name: "Wookie",
       type: "English Sheepdog",
     },
-  ];
+  ],
+  newDescription: "",
+};
 
-  function pickNewFavorite() {
+onChangeNewFavorite = (event) => {
+  const value = event.target.valuethis.setState({newDescription: value});
+};
+
+  onPickNewFavorite = () => {
     let newDogIndex = Math.floor(Math.random() * dogs.length);
     return dogs[newDogIndex];
   }
 
-  let favoriteDog = pickNewFavorite();
+  favoriteDog = pickNewFavorite();
 
+
+  render() {
   return (
     <div className="dogs">
-      <Header numDogs={dogs.length} />
+      <Header numDogs={this.state.dogs.length} />
       <h2>My Dogs</h2>
-      <div>
-        {dogs.map((dog) => (
+      <ul className="dogList">
+      {this.state.dogs.map((dog) => (
+        <li>
           <Dog dog={dog} />
-        ))}
+        </li>
+      ))}
+      </ul>
+      <br />
+      <div>
+      <input style={styles.itemInput} onChange={this.onChangeNewFavorite} value={this.state.newDescription} type="text" />
+    <button onClick={this.onPickNewFavorite} style={styles.itemButton}>Pick New Favorite</button>
       </div>
-      <h2>My Favorite dog is {favoriteDog.name}</h2>
     </div>
   );
+}
 }
 
 export default App;
